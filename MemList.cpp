@@ -3,7 +3,7 @@
 // 
 // MemList.cpp
 //
-// Class implementation of MemList for New Beginnings Final Proficiency Exam
+// // Class implementation of MemList for New Beginnings Final Proficiency Exam
 // 2018
 
 #include "MemList.hpp"
