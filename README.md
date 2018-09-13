@@ -35,7 +35,7 @@ There are a just a few functions that the OS needs from the allocator:
     e.  Find any blocks in the free list that are adjacent and combine
         them into a single block
 
-This exam has four(4) levels -- 0 through 3 -- which add progressive
+This exam has four(4) levels -- 0 through 3 -- which add progressively
 more complicated functionality.
 
 Getting Started
