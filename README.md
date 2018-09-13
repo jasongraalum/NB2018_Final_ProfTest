@@ -44,14 +44,13 @@ Getting Started
 To get started, fork the following repo from GitHub into your own
 account:
 
-https://github.com/jasongraalum/NB2018\_Final\_ProfTest
+https://github.com/jasongraalum/NB2018_Final_ProfTest
 
 (Don't clone it -- Fork it.)
 
 Then clone your Fork of the repo
 
-\%git clone
-[https://github.com/\<your\_acct\_name\>/NB2018_Final_ProfTest](https://github.com/%3cyour_acct_name%3e/NB2018_Final_ProfTest)
+\%git clone https://github.com/<your_acct_name>/NB2018_Final_ProfTest
 
 The repo contains:
 
