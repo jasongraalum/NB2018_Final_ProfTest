@@ -51,7 +51,7 @@ https://github.com/jasongraalum/NB2018\_Final\_ProfTest
 Then clone your Fork of the repo
 
 \%git clone
-[https://github.com/\<your\_acct\_name\>/NB2018\_Final\_ProfTest](https://github.com/%3cyour_acct_name%3e/NB2018_Final_ProfTest)
+[https://github.com/\<your\_acct\_name\>/NB2018_Final_ProfTest](https://github.com/%3cyour_acct_name%3e/NB2018_Final_ProfTest)
 
 The repo contains:
 
