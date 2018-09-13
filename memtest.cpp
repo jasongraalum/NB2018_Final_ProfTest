@@ -7,6 +7,7 @@
 // 2018
 
 #include <iostream>
+#include <cstring>
 #include "MemList.hpp"
 
 void memtest0();
