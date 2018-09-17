@@ -5,7 +5,8 @@
 //
 // // Class implementation of MemList for New Beginnings Final Proficiency Exam
 // 2018
-
+#include <iostream>
+using namespace std;
 #include "MemList.hpp"
 #include "MemBlock.hpp"
 #include <iostream>
@@ -74,7 +75,7 @@ void MemList::displayReserved()
 MemList::MemList(unsigned int s_addr, unsigned int block_size)
 {
     // To be implemented(replace the two lines below)
-    free_head = NULL;
+    free_head = new MemBlock(s_addr, block_size);
     reserved_head = NULL;
 }
 
@@ -89,8 +90,44 @@ MemList::MemList(unsigned int s_addr, unsigned int block_size)
 //
 MemBlock * MemList::reserveMemBlock(unsigned int block_size)
 {
-    // To be implemented
-    return NULL;
+   if (!free_head)
+      return NULL;
+   else{
+      MemBlock * current = free_head;
+      while (block_size > current->getSize() && current->getNext() !=NULL){
+         current = current->getNext();
+      }
+      if (current->getNext() == NULL){
+         if (current->getSize() >= block_size){
+               MemBlock * temp = reserved_head;
+               reserved_head = new MemBlock(current->getAddr(), block_size);
+               reserved_head->setNext(temp);
+               current->setAddr(current->getAddr()+block_size);
+               current->setSize(current->getSize()-block_size);
+               return reserved_head;
+         }
+         else{
+            cout<<"not enough space";
+            return NULL;
+         }
+      }
+//      if (reserved_head == NULL){
+//         reserved_head = new MemBlock(current->getAddr(), block_size);
+//         reserved_head->setSize(block_size);
+//         reserved_head->setAddr(current->getAddr());
+//         current->setAddr(current->getAddr()+block_size);
+//         current->setSize(current->getSize()-block_size);
+//         return reserved_head;
+//      }
+      else{
+         MemBlock * temp = reserved_head;
+         reserved_head = new MemBlock(current->getAddr(), block_size);
+         reserved_head->setNext(temp);
+         current->setAddr(current->getAddr()+block_size);
+         current->setSize(current->getSize()-block_size);
+         return reserved_head;
+     }   
+   }
 }
 
 
@@ -100,8 +137,13 @@ MemBlock * MemList::reserveMemBlock(unsigned int block_size)
 //
 unsigned int MemList::reservedSize()
 {
-    // To be implemented
-    return 0;
+int size = 0;
+   MemBlock * current = reserved_head;
+   while (current != NULL){
+      size += current->getSize();
+      current = current->getNext();
+   }
+    return size;
 }
 
 // Return the total size of all blocks in the Free List
@@ -109,8 +151,13 @@ unsigned int MemList::reservedSize()
 // Level 1
 unsigned int MemList::freeSize()
 {
-    // To be implemented
-    return 0;
+   int size = 0;
+   MemBlock * current = free_head;
+   while (current != NULL){
+      size += current->getSize();
+      current = current->getNext();
+   }
+    return size;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -126,8 +173,41 @@ unsigned int MemList::freeSize()
 //
 bool MemList::freeMemBlock(MemBlock * block_to_free)
 {
-    // To be implemented
-    return false;
+
+   MemBlock * freeblock = reserved_head;
+   MemBlock * prefreeblock = NULL;
+   while (freeblock != block_to_free && freeblock->getNext() != NULL){
+      prefreeblock = freeblock;
+      freeblock = freeblock->getNext();
+   }
+   cout<<"circled through loop to find block to free in reserved okay"<<endl;
+   if (freeblock == block_to_free){
+      MemBlock * current = free_head;
+      MemBlock * precurrent = NULL;
+      while (current->getAddr() < block_to_free->getAddr() && current->getNext() != NULL){
+         precurrent = current;
+         current = current->getNext();
+      }
+      cout<<"circled through loop to find spot to insert in free list okay"<<endl;
+      if (freeblock->getNext() != NULL){
+      cout<<"in if statement";
+         prefreeblock->setNext(freeblock->getNext());
+         precurrent->setNext(freeblock);
+         freeblock->setNext(current);
+      }
+      else{
+      cout<<"in else statment";
+         prefreeblock->setNext(NULL);
+         precurrent->setNext(freeblock);
+         freeblock->setNext(current);
+      }
+//need setAddr in there?         
+      return true;      
+   }
+   else{
+    cout<<"Not found"<<endl;
+   return false;
+   }
 }
 
 
@@ -138,8 +218,21 @@ bool MemList::freeMemBlock(MemBlock * block_to_free)
 //
 MemBlock * MemList::maxFree() 
 {
-    // To be implemented
-    return NULL;
+if (free_head !=NULL){
+MemBlock * max = free_head;
+   MemBlock * current = free_head;
+   while (current->getNext() != NULL){
+      if (current->getSize() > max->getSize()){
+         max = current;
+         current = current->getNext();
+      }
+   }  
+      if (current->getSize() > max->getSize())
+         max = current;
+    return max;
+}
+else
+   return NULL;
 }
 
 // Return a pointer to the MemBlcok with the smallest size from the Free List
@@ -148,8 +241,21 @@ MemBlock * MemList::maxFree()
 //
 MemBlock * MemList::minFree()
 {
-    // To be implemented
-    return NULL;
+if (free_head != NULL){
+   MemBlock* min = free_head;
+   MemBlock* current = free_head;
+   while (current->getNext() != NULL){
+      if (current->getSize() < min->getSize()){
+         min = current;
+         current = current->getNext();
+      }
+   }
+   if (current->getSize() < min->getSize())
+      min = current;
+    return min;
+}
+else
+   return NULL;
 }
 
 // Return the number of MemBlocks in the Free List
@@ -158,8 +264,17 @@ MemBlock * MemList::minFree()
 //
 unsigned int MemList::freeBlockCount()
 {
-    // To be implemented
-    return 0;
+if(free_head != NULL){
+   int count = 1;
+   MemBlock* current = free_head;
+   while (current->getNext() != NULL){
+      count++;  
+      current = current->getNext();
+   }
+    return count;
+}
+else
+   return 0;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
